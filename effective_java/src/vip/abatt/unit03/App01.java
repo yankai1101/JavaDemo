@@ -23,7 +23,8 @@ public class App01 {
         System.out.println(u1.equals(u2)); // true
 
         // 乱序
-        Object[] array = {u1, u4, u3, u6, u5, u2};
+        User[] array = {u1, u4, u3, u6, u5, u2};
+
         // 排序
         Arrays.sort(array);
         System.out.println(Arrays.toString(array));
@@ -52,9 +53,9 @@ class User implements Comparable<User> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (obj == this) // 参数是否为对象的引用，这只不过是一种性能优化。
             return true;
-        if (!(obj instanceof User))
+        if (!(obj instanceof User)) // 在进行转换前，一定要使用 instanceof 操作符
             return false;
         User u = (User) obj;
         return u.username == username && u.age == age;
@@ -62,9 +63,9 @@ class User implements Comparable<User> {
 
     @Override
     public int hashCode() {
-        // 如果不注重性能，可调用 Objects.hash(Object... values)
+        // 如果不注重性能，可返回 Objects.hash(Object... values)
         int hashCode = username.hashCode();
-        hashCode = 31 * hashCode + Integer.hashCode(age);
+        hashCode = 31 * hashCode + Integer.hashCode(age); // 31 * i == (i <<5) - i ,虚拟机已自动完成这种优化
         return hashCode;
     }
 
@@ -75,9 +76,9 @@ class User implements Comparable<User> {
     }
 
     @Override
-    public int compareTo(User o) {
-        // 年龄从小到大，若年龄一样，姓名从a到z
+    public int compareTo(User o) {// 年龄从小到大，若年龄一样，姓名从a到z
 
+        // compare(x,y): 返回 x - y > 0 返回 正；若 x - y = 0，返回零；若 x - y < 0，返回负
         int result = Integer.compare(this.age, o.age);
         if (result == 0) { // 年龄一样
             result = this.username.compareTo(o.username);
